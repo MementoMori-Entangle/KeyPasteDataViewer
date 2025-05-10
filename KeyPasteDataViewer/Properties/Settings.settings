@@ -1,0 +1,90 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="KeyPasteDataViewer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="data_type" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MySQL,SQLServer,Excel,CSV,TSV</Value>
+    </Setting>
+    <Setting Name="port" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-999,3306</Value>
+    </Setting>
+    <Setting Name="use_connection1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-1,-1,-1,-1,-1,-1</Value>
+    </Setting>
+    <Setting Name="use_connection2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-1,-1,-1,-1,-1,-1</Value>
+    </Setting>
+    <Setting Name="use_connection3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-1,-1,-1,-1,-1,-1</Value>
+    </Setting>
+    <Setting Name="use_connection4" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-1,-1,-1,-1,-1,-1</Value>
+    </Setting>
+    <Setting Name="use_connection5" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-1,-1,-1,-1,-1,-1</Value>
+    </Setting>
+    <Setting Name="chart_type" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">11</Value>
+    </Setting>
+    <Setting Name="query_text" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="query_check" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="aes_iv" Type="System.String" Scope="User">
+      <Value Profile="(Default)">pf69DL7GrWFyZcMK</Value>
+    </Setting>
+    <Setting Name="aes_key" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9Fix4L7HB4PKeKWY</Value>
+    </Setting>
+    <Setting Name="aes_key_size" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">128</Value>
+    </Setting>
+    <Setting Name="aes_block_size" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">128</Value>
+    </Setting>
+    <Setting Name="aes_mode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CBC</Value>
+    </Setting>
+    <Setting Name="rsa_key_size" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1024</Value>
+    </Setting>
+    <Setting Name="rsa_private_key" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="rsa_public_key" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="encrypt_type" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="data_source" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost,C:\workspace\</Value>
+    </Setting>
+    <Setting Name="data_name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">efw,テスト.xlsx,テスト.csv,テスト.txt</Value>
+    </Setting>
+    <Setting Name="user" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="use_connection_name1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Conn1</Value>
+    </Setting>
+    <Setting Name="use_connection_name2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Conn2</Value>
+    </Setting>
+    <Setting Name="use_connection_name3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Conn3</Value>
+    </Setting>
+    <Setting Name="use_connection_name4" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Conn4</Value>
+    </Setting>
+    <Setting Name="use_connection_name5" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Conn5</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
