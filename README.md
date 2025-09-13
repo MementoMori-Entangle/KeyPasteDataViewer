@@ -9,7 +9,7 @@ KeyPasteDataViewer
 データの簡易各種チャート表示、エクセルデータ出力ができます。
 
 # SixLabors について
-NPOIでSixLaborsに依存関係にある関係上、ライセンスに注意してください。  
+NPOIがSixLaborsに依存関係あり、ライセンスに注意してください。  
 SixLabors[https://github.com/SixLabors]  
 念のため、Apache-2.0時代のバージョンに固定してあります。
 
