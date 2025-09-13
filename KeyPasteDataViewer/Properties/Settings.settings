@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="data_type" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MySQL,SQLServer,Excel,CSV,TSV</Value>
+      <Value Profile="(Default)">PostgreSQL,MySQL,SQLServer,Excel,CSV,TSV</Value>
     </Setting>
     <Setting Name="port" Type="System.String" Scope="User">
-      <Value Profile="(Default)">-999,3306</Value>
+      <Value Profile="(Default)">-999,5432,3306</Value>
     </Setting>
     <Setting Name="use_connection1" Type="System.String" Scope="User">
       <Value Profile="(Default)">-1,-1,-1,-1,-1,-1</Value>
@@ -63,7 +63,7 @@
       <Value Profile="(Default)">localhost,C:\workspace\</Value>
     </Setting>
     <Setting Name="data_name" Type="System.String" Scope="User">
-      <Value Profile="(Default)">efw,テスト.xlsx,テスト.csv,テスト.txt</Value>
+      <Value Profile="(Default)">DecibelMonitor,efw,テスト.xlsx,テスト.csv,テスト.txt</Value>
     </Setting>
     <Setting Name="user" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Npgsql;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -155,6 +156,11 @@ namespace KeyPasteDataViewer
         public const string DB_TABLE_NAME_COLUMNS_ALIAS = "name";
 
         /// <summary>
+        /// DB スキーマ名 別名
+        /// </summary>
+        public const string DB_TABLE_S_NAME_COLUMNS_ALIAS = "s_name";
+
+        /// <summary>
         /// DB SQLServer テーブル名取得クエリ
         /// </summary>
         public const string DB_SQLSERVER_TABLE_NAME_QUERY = "select name from sys.objects where type = 'U' order by name";
@@ -174,6 +180,18 @@ namespace KeyPasteDataViewer
         /// </summary>
         public const string DB_MYSQL_TABLE_COLUMNS_NAME_QUERY = "select column_name as name from information_schema.columns c"
                                                               + " where c.table_schema = '{1}' and c.table_name = '{0}' order by ordinal_position";
+
+        /// <summary>
+        /// DB POSTGRESQL テーブル名取得クエリ
+        /// </summary>
+        public const string DB_POSTGRESQL_TABLE_NAME_QUERY = "select table_schema as s_name, table_name as name from information_schema.tables"
+                                                           + " where table_type = 'BASE TABLE' and table_schema not in ('pg_catalog', 'information_schema')";
+
+        /// <summary>
+        /// DB POSTGRESQL テーブルカラム名取得クエリ
+        /// </summary>
+        public const string DB_POSTGRESQL_TABLE_COLUMNS_NAME_QUERY = "select column_name as name from information_schema.columns"
+                                                                   + " where table_schema = '{1}' AND table_name = '{0}' order by ordinal_position";
 
         /// <summary>
         /// キー 置換0
@@ -286,6 +304,11 @@ namespace KeyPasteDataViewer
         public const string DATA_TYPE_MYSQL = "MySQL";
 
         /// <summary>
+        /// データ種別 PostgreSQL
+        /// </summary>
+        public const string DATA_TYPE_POSTGRESQL = "PostgreSQL";
+
+        /// <summary>
         /// データ種別 Excel
         /// </summary>
         public const string DATA_TYPE_EXCEL = "Excel";
@@ -384,6 +407,41 @@ namespace KeyPasteDataViewer
         /// 接続 MYSQL パスワード文字列
         /// </summary>
         public const string CONNECTION_MYSQL_PASSWORD = ";password=";
+
+        /// <summary>
+        /// 接続 POSTGRESQL データソース文字列
+        /// </summary>
+        public const string CONNECTION_POSTGRESQL_DATA_SOURCE = "server=";
+
+        /// <summary>
+        /// 接続 POSTGRESQL ポート文字列
+        /// </summary>
+        public const string CONNECTION_POSTGRESQL_PORT = ";port=";
+
+        /// <summary>
+        /// 接続 POSTGRESQL カタログ文字列
+        /// </summary>
+        public const string CONNECTION_POSTGRESQL_CATALOG = ";database=";
+
+        /// <summary>
+        /// 接続 POSTGRESQL セキュリティ文字列
+        /// </summary>
+        public const string CONNECTION_POSTGRESQL_SECURITY = ";Trust Server Certificate=false";
+
+        /// <summary>
+        /// 接続 POSTGRESQL SSLモード文字列
+        /// </summary>
+        public const string CONNECTION_POSTGRESQL_SSL_MODE = ";SSL Mode=Disable";
+
+        /// <summary>
+        /// 接続 POSTGRESQL ユーザー文字列
+        /// </summary>
+        public const string CONNECTION_POSTGRESQL_USER = ";user id=";
+
+        /// <summary>
+        /// 接続 POSTGRESQL パスワード文字列
+        /// </summary>
+        public const string CONNECTION_POSTGRESQL_PASSWORD = ";password=";
 
         /// <summary>
         /// Excel 文字列フォーマット
@@ -657,6 +715,11 @@ namespace KeyPasteDataViewer
         public Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, string>>>> PreconditionDictionary { get; set; }
 
         /// <summary>
+        /// テーブル名とスキーマ名辞書
+        /// </summary>
+        public Dictionary<string, string> TableSchemaDictionary { get; set; }
+
+        /// <summary>
         /// データグリッドビュー
         /// </summary>
         public DataGridView MainDataGridView { get; set; }
@@ -690,6 +753,7 @@ namespace KeyPasteDataViewer
 
             KeyCheckedList = new List<string>();
             PreconditionDictionary = new Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, string>>>>();
+            TableSchemaDictionary = new Dictionary<string, string>();
             MainDataGridView = new DataGridView();
             BackDataGridView = new DataGridView();
             DataTable = new DataTable();
@@ -1485,6 +1549,28 @@ namespace KeyPasteDataViewer
                         }
                     }
                     break;
+                case DATA_TYPE_POSTGRESQL:
+                    using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
+                    {
+                        try
+                        {
+                            // データベース接続開始
+                            connection.Open();
+
+                            // SQL実行
+                            NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(query, connection);
+                            adapter.Fill(table);
+                        }
+                        catch (SqlException)
+                        {
+                            throw;
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
@@ -1533,7 +1619,7 @@ namespace KeyPasteDataViewer
         /// </summary>
         /// <param name="query">クエリ</param>
         /// <param name="tableName">テーブル名</param>
-        /// /// <param name="dbName">DB名</param>
+        /// <param name="dbName">DB名</param>
         /// <returns>テーブル情報リスト</returns>
         public List<string> GetTableInfo(string query, string tableName = BLANK, string dbName = BLANK)
         {
@@ -1550,13 +1636,32 @@ namespace KeyPasteDataViewer
                 {
                     query = query.Replace(KEY_REPLACE_1, dbName);
                 }
+                else
+                {
+                    if (TableSchemaDictionary.ContainsKey(tableName))
+                    {
+                        query = query.Replace(KEY_REPLACE_1, TableSchemaDictionary[tableName]);
+                    }
+                }
 
-                DataTable dataTable = this.GetDataTableFromQuery(query);
+                    DataTable dataTable = this.GetDataTableFromQuery(query);
                 int record = dataTable.Rows.Count;
 
                 for (int i = ZERO; i < record; i++)
                 {
                     DataRowCollection dataRow = dataTable.Rows;
+
+                    if (dataTable.Columns.Contains(DB_TABLE_S_NAME_COLUMNS_ALIAS) && dataRow[i][DB_TABLE_S_NAME_COLUMNS_ALIAS] != null)
+                    {
+                        if (!TableSchemaDictionary.ContainsKey(dataRow[i][DB_TABLE_NAME_COLUMNS_ALIAS].ToString()))
+                        {
+                            TableSchemaDictionary.Add(dataRow[i][DB_TABLE_NAME_COLUMNS_ALIAS].ToString(), dataRow[i][DB_TABLE_S_NAME_COLUMNS_ALIAS].ToString());
+                        }
+                        else
+                        {
+                            TableSchemaDictionary[dataRow[i][DB_TABLE_NAME_COLUMNS_ALIAS].ToString()] = dataRow[i][DB_TABLE_S_NAME_COLUMNS_ALIAS].ToString();
+                        }
+                    }
 
                     infoList.Add(dataRow[i][DB_TABLE_NAME_COLUMNS_ALIAS].ToString());
                 }
@@ -1606,6 +1711,24 @@ namespace KeyPasteDataViewer
                             // データベース接続開始
                             connection.Open();
 
+                            if (ConnectionState.Open == connection.State)
+                            {
+                                isDataBaseConnection = true;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
+                    }
+                    break;
+                case DATA_TYPE_POSTGRESQL:
+                    using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
+                    {
+                        try
+                        {
+                            // データベース接続開始
+                            connection.Open();
                             if (ConnectionState.Open == connection.State)
                             {
                                 isDataBaseConnection = true;

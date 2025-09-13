@@ -274,6 +274,9 @@ namespace KeyPasteDataViewer
                         case KeyPasteData.DATA_TYPE_MYSQL:
                             this.dataKeyList = this.keyPasteData.GetTableInfo(KeyPasteData.DB_MYSQL_TABLE_COLUMNS_NAME_QUERY, data, this.keyPasteData.Catalog);
                             break;
+                        case KeyPasteData.DATA_TYPE_POSTGRESQL:
+                            this.dataKeyList = this.keyPasteData.GetTableInfo(KeyPasteData.DB_POSTGRESQL_TABLE_COLUMNS_NAME_QUERY, data, null);
+                            break;
                         case KeyPasteData.DATA_TYPE_EXCEL:
                             this.dataKeyList = this.keyPasteData.GetExcelHeaderInfo(TentativeHeaderCheckBox.Checked, data);
                             this.keyPasteData.LoadDataTable(TentativeHeaderCheckBox.Checked, data);
@@ -366,6 +369,7 @@ namespace KeyPasteDataViewer
                 {
                     case KeyPasteData.DATA_TYPE_SQLSERVER:
                     case KeyPasteData.DATA_TYPE_MYSQL:
+                    case KeyPasteData.DATA_TYPE_POSTGRESQL:
                         if (QueryCheckBox.Checked)
                         {
                             query = QueryRichTextBox.Text.Replace(KeyPasteData.NEW_LINE_R, KeyPasteData.BLANK).Replace(KeyPasteData.NEW_LINE_N, KeyPasteData.BLANK);
@@ -508,7 +512,7 @@ namespace KeyPasteDataViewer
             }
 
             if ((KeyPasteData.DATA_TYPE_SQLSERVER == this.keyPasteData.DataType || KeyPasteData.DATA_TYPE_MYSQL == this.keyPasteData.DataType
-                || KeyPasteData.DATA_TYPE_EXCEL == this.keyPasteData.DataType)
+                || KeyPasteData.DATA_TYPE_POSTGRESQL == this.keyPasteData.DataType || KeyPasteData.DATA_TYPE_EXCEL == this.keyPasteData.DataType)
                 && string.IsNullOrEmpty(DataComboBox.Text))
             {
                 return;
@@ -598,15 +602,18 @@ namespace KeyPasteDataViewer
         /// <param name="e"></param>
         private void DataTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (KeyPasteData.DATA_TYPE_SQLSERVER == DataTypeComboBox.Text || KeyPasteData.DATA_TYPE_MYSQL == DataTypeComboBox.Text)
+            switch (DataTypeComboBox.Text)
             {
-                TentativeHeaderCheckBox.Enabled = false;
-                PortComboBox.Enabled = true;
-            }
-            else
-            {
-                TentativeHeaderCheckBox.Enabled = true;
-                PortComboBox.Enabled = false;
+                case KeyPasteData.DATA_TYPE_SQLSERVER:
+                case KeyPasteData.DATA_TYPE_MYSQL:
+                case KeyPasteData.DATA_TYPE_POSTGRESQL:
+                    TentativeHeaderCheckBox.Enabled = false;
+                    PortComboBox.Enabled = true;
+                    break;
+                default:
+                    TentativeHeaderCheckBox.Enabled = true;
+                    PortComboBox.Enabled = false;
+                    break;
             }
         }
 
@@ -661,6 +668,7 @@ namespace KeyPasteDataViewer
                 {
                     case KeyPasteData.DATA_TYPE_SQLSERVER:
                     case KeyPasteData.DATA_TYPE_MYSQL:
+                    case KeyPasteData.DATA_TYPE_POSTGRESQL:
                     case KeyPasteData.DATA_TYPE_EXCEL:
                         title = DataComboBox.Text;
                         break;
@@ -1263,6 +1271,20 @@ namespace KeyPasteDataViewer
                         if (isConnection)
                         {
                             dataList = this.keyPasteData.GetTableInfo(KeyPasteData.DB_MYSQL_TABLE_NAME_QUERY, null, this.keyPasteData.Catalog);
+                        }
+                        break;
+                    case KeyPasteData.DATA_TYPE_POSTGRESQL:
+                        if (!string.IsNullOrEmpty(port))
+                        {
+                            port = KeyPasteData.CONNECTION_POSTGRESQL_PORT + port;
+                        }
+                        this.keyPasteData.ConnectionString = KeyPasteData.CONNECTION_POSTGRESQL_DATA_SOURCE + this.keyPasteData.DataSource + port
+                                              + KeyPasteData.CONNECTION_POSTGRESQL_CATALOG + this.keyPasteData.Catalog + KeyPasteData.CONNECTION_POSTGRESQL_USER + this.keyPasteData.User
+                                              + KeyPasteData.CONNECTION_POSTGRESQL_PASSWORD + this.keyPasteData.Password + KeyPasteData.CONNECTION_POSTGRESQL_SECURITY;
+                        isConnection = this.keyPasteData.IsDataBaseConnection();
+                        if (isConnection)
+                        {
+                            dataList = this.keyPasteData.GetTableInfo(KeyPasteData.DB_POSTGRESQL_TABLE_NAME_QUERY, this.keyPasteData.Catalog);
                         }
                         break;
                     case KeyPasteData.DATA_TYPE_EXCEL:
