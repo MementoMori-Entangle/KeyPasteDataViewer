@@ -12,7 +12,7 @@ namespace KeyPasteDataViewer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.13.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.14.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,7 +25,7 @@ namespace KeyPasteDataViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MySQL,SQLServer,Excel,CSV,TSV")]
+        [global::System.Configuration.DefaultSettingValueAttribute("PostgreSQL,MySQL,SQLServer,Excel,CSV,TSV")]
         public string data_type {
             get {
                 return ((string)(this["data_type"]));
@@ -37,7 +37,7 @@ namespace KeyPasteDataViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-999,3306")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-999,5432,3306")]
         public string port {
             get {
                 return ((string)(this["port"]));
@@ -265,7 +265,7 @@ namespace KeyPasteDataViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("efw,テスト.xlsx,テスト.csv,テスト.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DecibelMonitor,efw,テスト.xlsx,テスト.csv,テスト.txt")]
         public string data_name {
             get {
                 return ((string)(this["data_name"]));
