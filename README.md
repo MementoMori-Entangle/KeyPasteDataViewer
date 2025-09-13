@@ -8,6 +8,10 @@ KeyPasteDataViewer
 検索データに対して、マスキングや暗号化、  
 データの簡易各種チャート表示、エクセルデータ出力ができます。
 
+# グラフについて
+グラフ機能でSixLaborsを使用しているため、ライセンスに注意してください。  
+SixLabors[https://github.com/SixLabors]  
+(オミットかライセンスの緩いOSSに変更したバージョンを作成する予定)
 
 <img width="705" alt="KeyPasteDataViewer_001" src="https://github.com/user-attachments/assets/ac3d8cae-a344-4ca8-8857-f70aa70423dc" />
 
