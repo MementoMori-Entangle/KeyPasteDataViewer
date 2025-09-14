@@ -25,7 +25,7 @@ namespace KeyPasteDataViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PostgreSQL,MySQL,SQLServer,Excel,CSV,TSV")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Oracle,PostgreSQL,MySQL,SQLServer,Excel,CSV,TSV")]
         public string data_type {
             get {
                 return ((string)(this["data_type"]));
@@ -37,7 +37,7 @@ namespace KeyPasteDataViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-999,5432,3306")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-999,1521,5432,3306")]
         public string port {
             get {
                 return ((string)(this["port"]));
@@ -265,7 +265,7 @@ namespace KeyPasteDataViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DecibelMonitor,efw,テスト.xlsx,テスト.csv,テスト.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FREEPDB1,DecibelMonitor,efw,テスト.xlsx,テスト.csv,テスト.txt")]
         public string data_name {
             get {
                 return ((string)(this["data_name"]));

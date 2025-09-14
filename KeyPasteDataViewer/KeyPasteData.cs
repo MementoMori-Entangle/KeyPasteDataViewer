@@ -3,6 +3,7 @@ using Npgsql;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -192,6 +193,17 @@ namespace KeyPasteDataViewer
         /// </summary>
         public const string DB_POSTGRESQL_TABLE_COLUMNS_NAME_QUERY = "select column_name as name from information_schema.columns"
                                                                    + " where table_schema = '{1}' AND table_name = '{0}' order by ordinal_position";
+        /// <summary>
+        /// DB ORACLE テーブル名取得クエリ
+        /// </summary>
+        public const string DB_ORACLE_TABLE_NAME_QUERY = "select TABLE_NAME AS name from USER_TABLES order by TABLE_NAME";
+
+        /// <summary>
+        /// DB ORACLE テーブルカラム名取得クエリ
+        /// </summary>
+        public const string DB_ORACLE_TABLE_COLUMNS_NAME_QUERY = "select COLUMN_NAME AS name from USER_TAB_COLUMNS"
+                                                               + " where TABLE_NAME = '{0}' order by COLUMN_ID";
+
 
         /// <summary>
         /// キー 置換0
@@ -307,6 +319,11 @@ namespace KeyPasteDataViewer
         /// データ種別 PostgreSQL
         /// </summary>
         public const string DATA_TYPE_POSTGRESQL = "PostgreSQL";
+
+        /// <summary>
+        /// データ種別 ORACLE
+        /// </summary>
+        public const string DATA_TYPE_ORACLE = "Oracle";
 
         /// <summary>
         /// データ種別 Excel
@@ -442,6 +459,36 @@ namespace KeyPasteDataViewer
         /// 接続 POSTGRESQL パスワード文字列
         /// </summary>
         public const string CONNECTION_POSTGRESQL_PASSWORD = ";password=";
+
+        /// <summary>
+        /// 接続 ORACLE データソース文字列
+        /// </summary>
+        public const string CONNECTION_ORACLE_DATA_SOURCE = ";Data Source=";
+
+        /// <summary>
+        /// 接続 ORACLE ポート文字列
+        /// </summary>
+        public const string CONNECTION_ORACLE_PORT = ":";
+
+        /// <summary>
+        /// 接続 ORACLE サービス名文字列
+        /// </summary>
+        public const string CONNECTION_ORACLE_SERVICE = "/";
+
+        /// <summary>
+        /// 接続 ORACLE SSLモード文字列
+        /// </summary>
+        public const string CONNECTION_ORACLE_SSL_MODE = ";SSL_SERVER_DN_MATCH=true";
+
+        /// <summary>
+        /// 接続 ORACLE ユーザー文字列
+        /// </summary>
+        public const string CONNECTION_ORACLE_USER = "User Id=";
+
+        /// <summary>
+        /// 接続 ORACLE パスワード文字列
+        /// </summary>
+        public const string CONNECTION_ORACLE_PASSWORD = ";Password=";
 
         /// <summary>
         /// Excel 文字列フォーマット
@@ -1571,6 +1618,30 @@ namespace KeyPasteDataViewer
                         }
                     }
                     break;
+                case DATA_TYPE_ORACLE:
+                    using (OracleConnection connection = new OracleConnection(ConnectionString))
+                    using (OracleCommand command = connection.CreateCommand())
+                    {
+                        try
+                        {
+                            // データベース接続開始
+                            connection.Open();
+                            // SQL設定
+                            command.CommandText = @query;
+                            // SQL実行
+                            OracleDataAdapter adapter = new OracleDataAdapter(command);
+                            adapter.Fill(table);
+                        }
+                        catch (SqlException)
+                        {
+                            throw;
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
@@ -1724,6 +1795,24 @@ namespace KeyPasteDataViewer
                     break;
                 case DATA_TYPE_POSTGRESQL:
                     using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
+                    {
+                        try
+                        {
+                            // データベース接続開始
+                            connection.Open();
+                            if (ConnectionState.Open == connection.State)
+                            {
+                                isDataBaseConnection = true;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
+                    }
+                    break;
+                case DATA_TYPE_ORACLE:
+                    using (OracleConnection connection = new OracleConnection(ConnectionString))
                     {
                         try
                         {
