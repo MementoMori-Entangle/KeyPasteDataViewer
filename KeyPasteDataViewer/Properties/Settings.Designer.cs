@@ -358,5 +358,17 @@ namespace KeyPasteDataViewer.Properties {
                 this["use_connection_name5"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool use_connection_name_auto {
+            get {
+                return ((bool)(this["use_connection_name_auto"]));
+            }
+            set {
+                this["use_connection_name_auto"] = value;
+            }
+        }
     }
 }

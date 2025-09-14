@@ -1184,6 +1184,30 @@ namespace KeyPasteDataViewer
         }
 
         /// <summary>
+        /// 接続名を取得して返却
+        /// </summary>
+        /// <param name="useCsv">利用CSV文字列</param>
+        /// <returns>接続名</returns>
+        private string GetConnName(string useCsv)
+        {
+            string connName = null;
+            string[] comboBoxDatas = useCsv.Split(KeyPasteData.CSV_SP, StringSplitOptions.RemoveEmptyEntries);
+
+            if (null != comboBoxDatas && KeyPasteData.USE_CONNECTION_SAVE_ITEM_NUM == comboBoxDatas.Length)
+            {
+                int pos = KeyPasteData.ZERO;
+                int.TryParse(comboBoxDatas[KeyPasteData.TWO], out pos);
+
+                if (DataNameComboBox.Items.Count > pos && pos > KeyPasteData.MINUS)
+                {
+                    connName = DataNameComboBox.Items[pos].ToString();
+                }
+            }
+
+            return connName;
+        }
+
+        /// <summary>
         /// 利用接続処理
         /// </summary>
         /// <param name="useCsv">利用CSV文字列</param>
@@ -1503,6 +1527,17 @@ namespace KeyPasteDataViewer
             UseConnection3Button.Text = (string)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_NAME_3];
             UseConnection4Button.Text = (string)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_NAME_4];
             UseConnection5Button.Text = (string)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_NAME_5];
+
+            bool isConnNameAuto = (bool)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_NAME_AUTO];
+
+            if (isConnNameAuto)
+            {
+                UseConnection1Button.Text = GetConnName((string)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_1]) ?? UseConnection1Button.Text;
+                UseConnection2Button.Text = GetConnName((string)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_2]) ?? UseConnection2Button.Text;
+                UseConnection3Button.Text = GetConnName((string)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_3]) ?? UseConnection3Button.Text;
+                UseConnection4Button.Text = GetConnName((string)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_4]) ?? UseConnection4Button.Text;
+                UseConnection5Button.Text = GetConnName((string)Properties.Settings.Default[KeyPasteData.KEY_USE_CONNECTION_5]) ?? UseConnection5Button.Text;
+            }
         }
 
         /// <summary>
