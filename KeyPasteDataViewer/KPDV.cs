@@ -119,6 +119,9 @@ namespace KeyPasteDataViewer
                         case KeyPasteData.DATA_TYPE_POSTGRESQL:
                             this.dataKeyList = this.keyPasteData.GetTableInfo(KeyPasteData.DB_POSTGRESQL_TABLE_COLUMNS_NAME_QUERY, data, null);
                             break;
+                        case KeyPasteData.DATA_TYPE_ORACLE:
+                            this.dataKeyList = this.keyPasteData.GetTableInfo(KeyPasteData.DB_ORACLE_TABLE_COLUMNS_NAME_QUERY, data, null);
+                            break;
                         case KeyPasteData.DATA_TYPE_EXCEL:
                             this.dataKeyList = this.keyPasteData.GetExcelHeaderInfo(TentativeHeaderCheckBox.Checked, data);
                             this.keyPasteData.LoadDataTable(TentativeHeaderCheckBox.Checked, data);
@@ -212,6 +215,7 @@ namespace KeyPasteDataViewer
                     case KeyPasteData.DATA_TYPE_SQLSERVER:
                     case KeyPasteData.DATA_TYPE_MYSQL:
                     case KeyPasteData.DATA_TYPE_POSTGRESQL:
+                    case KeyPasteData.DATA_TYPE_ORACLE:
                         if (QueryCheckBox.Checked)
                         {
                             query = QueryRichTextBox.Text.Replace(KeyPasteData.NEW_LINE_R, KeyPasteData.BLANK).Replace(KeyPasteData.NEW_LINE_N, KeyPasteData.BLANK);
@@ -354,7 +358,8 @@ namespace KeyPasteDataViewer
             }
 
             if ((KeyPasteData.DATA_TYPE_SQLSERVER == this.keyPasteData.DataType || KeyPasteData.DATA_TYPE_MYSQL == this.keyPasteData.DataType
-                || KeyPasteData.DATA_TYPE_POSTGRESQL == this.keyPasteData.DataType || KeyPasteData.DATA_TYPE_EXCEL == this.keyPasteData.DataType)
+                || KeyPasteData.DATA_TYPE_POSTGRESQL == this.keyPasteData.DataType || KeyPasteData.DATA_TYPE_ORACLE == this.keyPasteData.DataType
+                || KeyPasteData.DATA_TYPE_EXCEL == this.keyPasteData.DataType)
                 && string.IsNullOrEmpty(DataComboBox.Text))
             {
                 return;
@@ -449,6 +454,7 @@ namespace KeyPasteDataViewer
                 case KeyPasteData.DATA_TYPE_SQLSERVER:
                 case KeyPasteData.DATA_TYPE_MYSQL:
                 case KeyPasteData.DATA_TYPE_POSTGRESQL:
+                case KeyPasteData.DATA_TYPE_ORACLE:
                     TentativeHeaderCheckBox.Enabled = false;
                     PortComboBox.Enabled = true;
                     break;
@@ -511,6 +517,7 @@ namespace KeyPasteDataViewer
                     case KeyPasteData.DATA_TYPE_SQLSERVER:
                     case KeyPasteData.DATA_TYPE_MYSQL:
                     case KeyPasteData.DATA_TYPE_POSTGRESQL:
+                    case KeyPasteData.DATA_TYPE_ORACLE:
                     case KeyPasteData.DATA_TYPE_EXCEL:
                         title = DataComboBox.Text;
                         break;
@@ -1130,6 +1137,20 @@ namespace KeyPasteDataViewer
                         if (isConnection)
                         {
                             dataList = this.keyPasteData.GetTableInfo(KeyPasteData.DB_POSTGRESQL_TABLE_NAME_QUERY, null, this.keyPasteData.Catalog);
+                        }
+                        break;
+                    case KeyPasteData.DATA_TYPE_ORACLE:
+                        if (!string.IsNullOrEmpty(port))
+                        {
+                            port = KeyPasteData.CONNECTION_ORACLE_PORT + port;
+                        }
+                        this.keyPasteData.ConnectionString = KeyPasteData.CONNECTION_ORACLE_USER + this.keyPasteData.User + KeyPasteData.CONNECTION_ORACLE_PASSWORD
+                                              + this.keyPasteData.Password + KeyPasteData.CONNECTION_ORACLE_DATA_SOURCE + this.keyPasteData.DataSource + port
+                                              + KeyPasteData.CONNECTION_ORACLE_SERVICE + this.keyPasteData.Catalog;
+                        isConnection = this.keyPasteData.IsDataBaseConnection();
+                        if (isConnection)
+                        {
+                            dataList = this.keyPasteData.GetTableInfo(KeyPasteData.DB_ORACLE_TABLE_NAME_QUERY, null, this.keyPasteData.Catalog);
                         }
                         break;
                     case KeyPasteData.DATA_TYPE_EXCEL:
