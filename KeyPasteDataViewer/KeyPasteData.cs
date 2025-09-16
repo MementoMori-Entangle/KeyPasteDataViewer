@@ -271,6 +271,11 @@ namespace KeyPasteDataViewer
         public const string KEY_USE_CONNECTION_5 = "use_connection5";
 
         /// <summary>
+        /// キー 利用接続名自動設定
+        /// </summary>
+        public const string KEY_USE_CONNECTION_NAME_AUTO = "use_connection_name_auto";
+
+        /// <summary>
         /// キー 利用接続名1
         /// </summary>
         public const string KEY_USE_CONNECTION_NAME_1 = "use_connection_name1";
